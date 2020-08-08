@@ -2,7 +2,7 @@ var express = require("express");
 var bodyParser = require("body-parser");
 var items = require("../models/user");
 var User = items.User;
-// var config = require("../config");
+var config = require("../config");
 const cors = require("cors");
 var app = express();
 app.use(cors({ origin: true, credentials: true }));
@@ -10,28 +10,53 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 var jwt = require("jsonwebtoken");
-// const nodemailer = require("nodemailer");
+const nodemailer = require("nodemailer");
 var bcrypt = require("bcrypt");
 var saltRounds = 10;
-// var accountSid = config.accountSid; // Your Account SID from www.twilio.com/console
-// var authToken = config.authToken; // Your Auth Token from www.twilio.com/console
-// var toNum = config.toNum;
-// var fromNum = config.fromNum;
-// var twilio = require("twilio");
-// var client = new twilio(accountSid, authToken);
+var jwtDecode = require("jwt-decode");
+
+var accountSid = config.accountSid; // Your Account SID from www.twilio.com/console
+var authToken = config.authToken; // Your Auth Token from www.twilio.com/console
+var toNum = config.toNum;
+var fromNum = config.fromNum;
+var twilio = require("twilio");
+var client = new twilio(accountSid, authToken);
 
 require("dotenv").config(); // to read .env file
 module.exports = {
   sendSMS: function (req, res) {
+    // console.log("here1", req.body[0].latitude, "this is latitude");
+    console.log("here2", req.body[1], "total");
+    console.log("here3", req.body[2].name, "name");
     console.log("hi from send sms");
-    var location = req.body;
+    var location = req.body[0];
+    var total = req.body[1];
+    var info = req.body[2];
+    var decode = jwtDecode(token);
+    console.log(decode);
+    var userMail = decode.email;
+    var phone = decode.phoneNumber;
+    var userName = decode.name;
     client.messages
       .create({
         body:
-          "Hi from Nanny app you have been reserved by a new mommy and this is the location, https://www.google.com/maps/search/?api=1&query=" +
+          " \n Hi " +
+          info.name +
+          " from Nanny app \n You have been reserved by " +
+          userName +
+          " and his/her location, https://www.google.com/maps/search/?api=1&query=" +
           location.latitude +
           "," +
-          location.longitude,
+          location.longitude +
+          " \n here is The contact information: \n Phone number : 0" +
+          phone +
+          " \n E-mail: " +
+          userMail +
+          " \n he/she will pay " +
+          total +
+          " in the end of the visit , he/she reserved you for " +
+          total / info.cost +
+          " hours .",
         to: toNum, // Text this number
         from: fromNum, // From a valid Twilio number
       })
@@ -61,6 +86,7 @@ module.exports = {
                 .then(() => {
                   console.log("user saved");
                   res.send("User authenticated");
+                  // console.log(res);
                 })
                 .catch((err) => {
                   console.log("Error is ", err.message);
@@ -79,6 +105,7 @@ module.exports = {
   userLogOut: function (req, res) {
     res.status(200).send({ auth: false, token: null });
   },
+
   userLogIn: function (req, res) {
     console.log(req);
     var newUser = {};
@@ -100,29 +127,29 @@ module.exports = {
                 token: token,
               });
               console.log("Error is", err.message);
+            } else if (result == false) {
+              console.log("password or email wrong");
+              res.send("password or email wrong");
             } else if (result == true) {
               // create token
-              const token = jwt.sign(
+              token = jwt.sign(
                 {
                   email: profile.email,
-                  password: profile.id,
+                  name: profile.name,
+                  phoneNumber: profile.phoneNumber,
+                  password: profile.password,
                 },
                 process.env.JWT_KEY,
                 {
                   expiresIn: "1h",
                 }
               );
-              // console.log(res.message)
-
               res.status(200).json({
                 message: "Auth granted, welcome!",
                 token: token,
               });
               console.log(token);
             }
-            // else {
-            //   res.send("User Unauthorized Access");
-            // }
           });
         }
       })
@@ -130,16 +157,56 @@ module.exports = {
         console.log("Error is ", err.message);
       });
   },
-  retriveUserByEmail: function (req, res) {
-    console.log(req.header);
-    console.log(req.body, "body");
-    var decoded = jwt.verify(req.headers["authorization"], process.env.JWT_KEY);
-    User.findOne({
-      _id: decoded._id,
+  sendFeedBack: function (req, res) {
+    var decode = jwtDecode(token);
+    console.log(decode);
+    var userMail = decode.email;
+    var phone = decode.phoneNumber;
+    var Name = decode.name;
+    console.log(req.body);
+    let transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "nannyHirring@gmail.com",
+        pass: "nannyHirring12345",
+      },
+    });
+
+    let mailOptions = {
+      from: userMail,
+      to: "nannycarecom@gmail.com",
+      subject: "Feed Back",
+      text:
+        "Name : " +
+        Name +
+        "\n Phone Number : " +
+        phone +
+        "\n Email : " +
+        userMail +
+        "\n Says : " +
+        req.body.text,
+    };
+
+    // Step 3
+    transporter.sendMail(mailOptions, (err, data) => {
+      if (err) {
+        res.status(400).json("Error:" + err);
+      }
+      res.json("Email send");
+    });
+  },
+  retriveUserByToken: function (req, res) {
+    console.log(token, "token");
+    var decode = jwtDecode(token);
+    console.log(decode, "decode");
+
+    User.find({
+      email: decode.email,
     })
       .then((user) => {
         if (user) {
-          res.json(user);
+          console.log(user, "your user here");
+          res.send(user);
         } else {
           res.send("User does not exist");
         }
@@ -148,53 +215,4 @@ module.exports = {
         res.send("error: " + err);
       });
   },
-  retriveUserByToken: function (req, res) {
-    User.find({ email: "sura@gmail.com" }, function (err, user) {
-      if (err) {
-        res.json(err);
-      } else {
-        console.log(user[0]);
-        res.json(user[0]);
-      }
-    });
-  },
-  // verifyToken: (req, res, next) => {
-  //   const token = req.header("auth-token");
-  //   if (!token) return res.status(401).json({ error: "Access denied" });
-  //   try {
-  //     const verified = jwt.verify(token, process.env.TOKEN_SECRET);
-  //     req.user = verified;
-  //     next(); // to continue the flow
-  //   } catch (err) {
-  //     res.status(400).json({ error: "Token is not valid" });
-  //   }
-  // },
 };
-// payment: function (req, res) {
-//   return stripe.charges
-//     .create({
-//       amount: req.body.amount, // Unit: cents
-//       currency: "eur",
-//       source: req.body.tokenId,
-//       description: "Test payment",
-//     })
-//     .then((result) => res.status(200).json(result));
-// },
-// sendSMS: function (req, res) {
-//   console.log("hi from send sms");
-//   var location = req.body;
-//   client.messages
-//     .create({
-//       body:
-//         "Hi from Nanny app you have been reserved by a new mommy and this is the location, https://www.google.com/maps/search/?api=1&query=" +
-//         location.latitude +
-//         "," +
-//         location.longitude,
-//       to: toNum, // Text this number
-//       from: fromNum, // From a valid Twilio number
-//     })
-//     .then((message) => console.log(message))
-//     .catch((err) => console.log(err));
-// }
-
-// middleware to validate token
