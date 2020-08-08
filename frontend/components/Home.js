@@ -43,8 +43,11 @@ function Home1() {
   return <AllNany />;
 }
 function Logout1() {
-  return <Logout />;
-}
+  
+    AsyncStorage.removeItem('token');
+    alert('You have been logged out.');
+  }
+
 function Confirm1() {
   return <Confirm />;
 }
@@ -81,7 +84,7 @@ function MyDrawer({ navigation }) {
             const [selected, setSelected] = useState([]); // state to save all selected nannies based on selection
             //fetching data from the db
             useEffect(() => {
-              fetch(`http://192.168.127.43:5000/ret`)
+              fetch(`http://192.168.1.16:5000/ret`)
                 .then((res) => res.json())
                 .then((response) => {
                   setNanylist(response);
@@ -107,7 +110,7 @@ function MyDrawer({ navigation }) {
             function nannyReserved(nany) {
               // function to reserve the nanny called once the reserve button clicked
               axios
-                .post(`http://192.168.127.43:5000/reserve`, nany)
+                .post(`http://192.168.1.16:5000/reserve`, nany)
                 .then((res) => res)
                 .then((data) => {
                   //saving nanny info into AsyncStorage

@@ -25,7 +25,7 @@ export default function ContactUS({ navigation }) {
             }}
             onSubmit={(values) => {
               axios
-                .post("http://192.168.127.43:5000/sendFeedBack", values)
+                .post("http://192.168.1.16:5000/sendFeedBack", values)
                 .then(function (res) {
                   console.log(res.data.token);
                 })
