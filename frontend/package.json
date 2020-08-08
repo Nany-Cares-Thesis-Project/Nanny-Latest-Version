@@ -1,0 +1,93 @@
+{
+  "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "start": "expo start -c",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "eject": "expo eject"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "0.0.6",
+    "@material-ui/core": "^4.11.0",
+    "@material-ui/icons": "^4.9.1",
+    "@react-native-community/async-storage": "^1.11.0",
+    "@react-native-community/masked-view": "^0.1.10",
+    "@react-navigation/bottom-tabs": "^5.7.1",
+    "@react-navigation/drawer": "^5.8.5",
+    "@react-navigation/material-top-tabs": "^5.2.13",
+    "@react-navigation/native": "^5.7.1",
+    "@react-navigation/stack": "^5.7.1",
+    "axios": "^0.19.2",
+    "axios-hooks": "^2.1.0",
+    "bootstrap": "^4.5.0",
+    "expo": "^38.0.8",
+    "expo-constants": "^9.1.1",
+    "expo-core": "^3.0.1",
+    "expo-linear-gradient": "^8.2.1",
+    "expo-location": "~8.2.1",
+    "expo-notifications": "~0.3.3",
+    "expo-permissions": "~9.0.1",
+    "expo-react-native-adapter": "^3.0.1",
+    "expo-sms": "^8.2.1",
+    "expo-status-bar": "^1.0.2",
+    "firebase": "^7.9.0",
+    "formik": "^2.1.5",
+    "formik-yup": "0.0.5",
+    "galio-framework": "^0.7.1",
+    "material-design-lite": "^1.3.0",
+    "react": "^16.11.0",
+    "react-bootstrap": "^1.2.2",
+    "react-dom": "~16.11.0",
+    "react-hook-form": "^6.0.7",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-38.0.2.tar.gz",
+    "react-native-animatable": "^1.3.3",
+    "react-native-button": "^3.0.1",
+    "react-native-cookies": "^3.3.0",
+    "react-native-elements": "^2.0.4",
+    "react-native-formik": "^1.7.8",
+    "react-native-geolocation-service": "^5.0.0",
+    "react-native-gesture-handler": "^1.6.0",
+    "react-native-linear-gradient": "^2.5.6",
+    "react-native-loading-spinner-overlay": "^1.1.0",
+    "react-native-maps": "^0.27.1",
+    "react-native-material-dropdown": "^0.11.1",
+    "react-native-navbar": "^2.1.0",
+    "react-native-paper": "^4.0.1",
+    "react-native-paystack-webview": "^3.2.0",
+    "react-native-phone-input": "^0.2.4",
+    "react-native-picker-dropdown": "^0.1.2",
+    "react-native-rave-webview": "^1.0.0",
+    "react-native-reanimated": "^1.9.0",
+    "react-native-router-flux": "^4.2.0",
+    "react-native-safe-area-context": "^3.0.7",
+    "react-native-screens": "^2.9.0",
+    "react-native-sms": "^1.11.0",
+    "react-native-text-ticker": "^1.5.0",
+    "react-native-vector-icons": "^7.0.0",
+    "react-native-web": "^0.11.7",
+    "react-native-webview": "^10.3.2",
+    "react-navigation": "^4.4.0",
+    "react-navigation-stack": "^2.8.2",
+    "slick-carousel": "^1.8.1",
+    "stripe-client": "^1.1.5",
+    "tcomb-form-native": "^0.6.20",
+    "tipsi-stripe": "^7.5.3",
+    "twilio": "^3.48.1",
+    "yup": "^0.29.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.8.6",
+    "babel-preset-expo": "^8.1.0"
+  },
+  "web": {
+    "build": {
+      "babel": {
+        "include": [
+          "galio-framework"
+        ]
+      }
+    }
+  },
+  "private": true
+}
