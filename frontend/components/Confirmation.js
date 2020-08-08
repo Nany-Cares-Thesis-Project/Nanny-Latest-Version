@@ -6,6 +6,7 @@ import axios from "axios";
 import { Keyboard, View, Text, TextInput, StyleSheet } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Notifications } from "expo";
+
 export default function Confirm() {
   const [info, setInfo] = useState([]);
   const [state, setButtounState] = useState(true);
@@ -19,6 +20,7 @@ export default function Confirm() {
   };
   var calculate;
   var onSubmit;
+
   useEffect(() => {
     //Retrieving user token, reserved nanny information and user location value from AsyncStorage
     try {
@@ -32,10 +34,12 @@ export default function Confirm() {
       throw error;
     }
   }, []);
+
   // function to send user location and total cost to the nanny via SMS
   onSubmit = () => {
     axios
-      .post("http://192.168.1.16:5000/sendSMS1", [
+
+      .post("http://192.168.127.43:5000/sendSMS1", [
         selectedLocation,
         total,
         info,
@@ -60,7 +64,9 @@ export default function Confirm() {
       schedulingOptions
     );
   };
+
   //Calculating total cost based on user input for how many hours he will reserve the nanny service
+
   //Calculating total cost based on user input for how many hours he will reserve the nanny service
   calculate = function calculateTotal() {
     var totalCost = info.cost * value;
@@ -69,6 +75,7 @@ export default function Confirm() {
     setButtonText("Done");
     alert("Your reservation done \n Your service costs: " + totalCost);
   };
+
   return (
     <View>
       <>
@@ -102,6 +109,7 @@ export default function Confirm() {
                   value={value}
                 ></TextInput>
               </View>
+
               <View>
                 <Button
                   mode="contained"
@@ -142,12 +150,14 @@ export default function Confirm() {
     </View>
   );
 }
+
 /*******************************Styling********************************/
 const styles = StyleSheet.create({
   image: {
     width: 100,
     height: 100,
   },
+
   input: {
     textAlign: "center",
   },

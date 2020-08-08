@@ -26,9 +26,7 @@ import Profile from "./profile";
 import MapScreen from "./map";
 import Logout from "./Logout";
 import Confirm from "./Confirmation";
-import { AsyncStorage } from 'react-native';
-
-
+import { AsyncStorage } from "react-native";
 
 const image = {
   uri:
@@ -83,7 +81,7 @@ function MyDrawer({ navigation }) {
             const [selected, setSelected] = useState([]); // state to save all selected nannies based on selection
             //fetching data from the db
             useEffect(() => {
-              fetch(`192.168.1.16:5000/ret`)
+              fetch(`http://192.168.127.43:5000/ret`)
                 .then((res) => res.json())
                 .then((response) => {
                   setNanylist(response);
@@ -106,25 +104,23 @@ function MyDrawer({ navigation }) {
                 setSelected(selected1);
               }
             }
-          function nannyReserved(nany) { // function to reserve the nanny called once the reserve button clicked
+            function nannyReserved(nany) {
+              // function to reserve the nanny called once the reserve button clicked
               axios
-                .post(`192.168.1.16:5000/reserve`, nany)
-                .then((res) => res
-               )
+                .post(`http://192.168.127.43:5000/reserve`, nany)
+                .then((res) => res)
                 .then((data) => {
-                
                   //saving nanny info into AsyncStorage
-                  AsyncStorage.setItem('nany', JSON.stringify(nany))
+                  AsyncStorage.setItem("nany", JSON.stringify(nany));
                   // getting user token value + Nanny info
-                  AsyncStorage.multiGet(['token','nany']).then((res) => {
-                    console.log(res)
-                  })
-                
-                } )
+                  AsyncStorage.multiGet(["token", "nany"]).then((res) => {
+                    console.log(res);
+                  });
+                })
                 .then(() => {
                   Actions.push("MapScreen");
                 })
-                
+
                 .catch((err) => console.log(err));
             }
             return (

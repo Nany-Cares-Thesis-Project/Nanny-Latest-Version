@@ -1,31 +1,19 @@
 import React, { useState, useEffect } from "react";
-import {
-  Keyboard,
-  Platform,
-  StyleSheet,
-  View,
-  Text,
-  Button,
-} from "react-native";
-
+import { Keyboard, Platform, StyleSheet, View, Text } from "react-native";
+import { Button } from "galio-framework";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import Constants from "expo-constants";
 import * as Location from "expo-location";
 import axios from "axios";
-import { AsyncStorage } from 'react-native';
-
 import { Notifications } from "expo";
 import * as Permissions from "expo-permissions";
-
 const localNotification = {
   title: "Nany APP",
   body: "You send yor location successfully!!",
 };
-
 const handleNotification = () => {
   console.warn("ok! got your notif");
 };
-
 const askNotification = async () => {
   // We need to ask for Notification permissions for ios devices
   const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
@@ -46,16 +34,10 @@ export default function MapScreen() {
     mocked: false,
     timestamp: 1577294172000,
   });
-
-  //store user location in AsyncStorage
-AsyncStorage.setItem('location', JSON.stringify(selectedLocation))
-
   const [errorMsg, setErrorMsg] = useState(null);
-
- 
   const onSubmit = (text) => {
     axios
-      .post("http://192.168.1.16:5000/sendSMS", selectedLocation)
+      .post("http://192.168.127.43:5000/sendSMS", selectedLocation)
       .then(function (response) {
         console.log(response);
       })
@@ -84,9 +66,7 @@ AsyncStorage.setItem('location', JSON.stringify(selectedLocation))
         if (status !== "granted") {
           setErrorMsg("Permission to access location was denied");
         }
-       
         let userLocation = await Location.getCurrentPositionAsync({});
-
         console.log(JSON.stringify(userLocation));
         setLocation(userLocation);
       })();
@@ -98,7 +78,6 @@ AsyncStorage.setItem('location', JSON.stringify(selectedLocation))
     latitudeDelta: 0.005,
     longitudeDelta: 0.005,
   };
-
   const selectLocationHandler = (event) => {
     event.preventDefault();
     setSelectedLocation({
@@ -106,9 +85,7 @@ AsyncStorage.setItem('location', JSON.stringify(selectedLocation))
       longitude: event.nativeEvent.coordinate.longitude,
     });
   };
-
   let markerCoordinates;
-
   if (selectedLocation) {
     markerCoordinates = {
       latitude: selectedLocation.latitude,
@@ -133,19 +110,8 @@ AsyncStorage.setItem('location', JSON.stringify(selectedLocation))
     const listener = Notifications.addListener(handleNotification);
     return () => listener.remove();
   }, []);
-
   return (
     <View style={styles.mapContainer}>
-      <Text
-        style={{
-          fontWeight: "200",
-          fontSize: 20,
-          marginTop: 40,
-          marginRight: 50,
-        }}
-      >
-        select your location
-      </Text>
       <MapView
         provider={PROVIDER_GOOGLE}
         style={styles.map}
@@ -156,35 +122,36 @@ AsyncStorage.setItem('location', JSON.stringify(selectedLocation))
           <Marker title="Picked Location" coordinate={markerCoordinates} />
         )}
       </MapView>
-      <View style={styles.button}>
-        <Button onPress={onSubmit} title="NEXT!" color="blue" />
+      <View>
+        <Button
+          title="Next"
+          mode="contained"
+          Text="Next"
+          size="large"
+          color="rgba(255,255,255,0.6)"
+          onPress={onSubmit}
+        >
+          <Text style={{ color: "black" }}>Next</Text>
+        </Button>
       </View>
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   button: {
     top: 60 + "%",
   },
   map: {
-    marginTop: 30 + "%",
-    flex: 0.9,
+    flex: 1,
+    width: "100%",
+    height: "100%",
   },
-
   mapContainer: {
     position: "absolute",
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
-  },
-  map: {
-    position: "absolute",
-    top: 100,
-    left: 0,
-    right: 0,
-    bottom: 200,
   },
   rad: {
     height: 50,
