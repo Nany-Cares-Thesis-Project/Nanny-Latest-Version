@@ -10,7 +10,6 @@ import {
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { AsyncStorage } from "react-native";
-
 export default function Profile() {
   const [userData, setUserData] = useState({});
   useEffect(() => {

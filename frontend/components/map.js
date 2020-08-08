@@ -7,6 +7,8 @@ import * as Location from "expo-location";
 import axios from "axios";
 import { Notifications } from "expo";
 import * as Permissions from "expo-permissions";
+import { Actions } from "react-native-router-flux";
+
 const localNotification = {
   title: "Nany APP",
   body: "You send yor location successfully!!",
@@ -37,10 +39,15 @@ export default function MapScreen() {
   const [errorMsg, setErrorMsg] = useState(null);
   const onSubmit = (text) => {
     axios
-      .post("http://192.168.127.43:5000/sendSMS", selectedLocation)
+      .post("http://192.168.127.43:5000/send", selectedLocation)
+      .then(
+        // console.log('fnh');
+        Actions.push("Confirm")
+      )
       .then(function (response) {
         console.log(response);
       })
+
       .catch(function (error) {
         console.log(error);
       });

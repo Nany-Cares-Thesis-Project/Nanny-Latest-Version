@@ -9,6 +9,8 @@ import {
   Image,
   StyleSheet,
 } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
+
 import { FontAwesome } from "@expo/vector-icons";
 import axios from "axios";
 import { Button } from "react-native-paper";
@@ -24,7 +26,7 @@ import Payment from "./payment";
 import ContactUS from "./ContactUS";
 import Profile from "./profile";
 import MapScreen from "./map";
-import Logout from "./Logout";
+import Login from "./LoginInputs";
 import Confirm from "./Confirmation";
 import { AsyncStorage } from "react-native";
 
@@ -42,9 +44,13 @@ function payment() {
 function Home1() {
   return <AllNany />;
 }
+
 function Logout1() {
-  return <Logout />;
+  AsyncStorage.removeItem("token");
+
+  return <Login />;
 }
+
 function Confirm1() {
   return <Confirm />;
 }
@@ -239,12 +245,25 @@ function MyDrawer({ navigation }) {
                               <Card
                                 flex
                                 borderless
-                                title={nany.name}
-                                caption={nany.cost + " $ /H"}
-                                location={nany.place}
+                                title={nany.name + "-" + nany.age + "Years old"}
+                                caption={nany.cost + " JD /H"}
                                 image={nany.image}
                                 style={{ backgroundColor: "white" }}
-                              />
+                              >
+                                <View
+                                  style={{
+                                    flexDirection: "row",
+                                    marginLeft: "70%",
+                                  }}
+                                >
+                                  <MaterialIcons
+                                    name="place"
+                                    size={24}
+                                    color="black"
+                                  />
+                                  <Text>{nany.place}</Text>
+                                </View>
+                              </Card>
                               <View>
                                 <Button
                                   title="Submit"
@@ -253,7 +272,7 @@ function MyDrawer({ navigation }) {
                                   onPress={() => nannyReserved(nany)}
                                 >
                                   <Text style={{ color: "black" }}>
-                                    Reserve {nany.name}
+                                    Reserve {nany.name.split(" ")[0]}
                                   </Text>
                                 </Button>
                               </View>
@@ -270,9 +289,8 @@ function MyDrawer({ navigation }) {
         />
         <Drawer.Screen name="Profile" component={Profile1} />
         {/* <Drawer.Screen name="Contact Us" component={ContactUs} /> */}
-        <Drawer.Screen name="payment screen" component={Payment} />
+
         <Drawer.Screen name="Logout" component={Logout1} />
-        <Drawer.Screen name="Confirm" component={Confirm1} />
       </Drawer.Navigator>
     </NavigationContainer>
   );
