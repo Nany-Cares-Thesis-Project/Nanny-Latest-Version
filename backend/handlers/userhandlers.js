@@ -2,7 +2,7 @@ var express = require("express");
 var bodyParser = require("body-parser");
 var items = require("../models/user");
 var User = items.User;
-var config = require("../config");
+//var config = require("../config");
 const cors = require("cors");
 var app = express();
 app.use(cors({ origin: true, credentials: true }));
@@ -15,12 +15,12 @@ var bcrypt = require("bcrypt");
 var saltRounds = 10;
 var jwtDecode = require("jwt-decode");
 
-var accountSid = config.accountSid; // Your Account SID from www.twilio.com/console
-var authToken = config.authToken; // Your Auth Token from www.twilio.com/console
-var toNum = config.toNum;
-var fromNum = config.fromNum;
-var twilio = require("twilio");
-var client = new twilio(accountSid, authToken);
+// var accountSid = config.accountSid; // Your Account SID from www.twilio.com/console
+// var authToken = config.authToken; // Your Auth Token from www.twilio.com/console
+// var toNum = config.toNum;
+// var fromNum = config.fromNum;
+// var twilio = require("twilio");
+// var client = new twilio(accountSid, authToken);
 
 require("dotenv").config(); // to read .env file
 module.exports = {

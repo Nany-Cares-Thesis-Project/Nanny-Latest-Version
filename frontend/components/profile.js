@@ -14,7 +14,7 @@ import { AsyncStorage } from "react-native";
 export default function Profile() {
   const [userData, setUserData] = useState({});
   useEffect(() => {
-    fetch(`http://192.168.127.43:5000/profile`)
+    fetch(`http://192.168.1.16:5000/profile`)
       .then((res) => res.json())
       .then((response) => {
         AsyncStorage.getItem("token").then((res) => {});
