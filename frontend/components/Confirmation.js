@@ -6,7 +6,7 @@ import axios from "axios";
 import { Keyboard, View, Text, TextInput, StyleSheet } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Notifications } from "expo";
-
+import { Actions } from "react-native-router-flux";
 export default function Confirm() {
   const [info, setInfo] = useState([]);
   const [state, setButtounState] = useState(true);
@@ -139,6 +139,9 @@ export default function Confirm() {
                   mode="contained"
                   style={{ marginTop: "3%" }}
                   color="rgba(255,255,255,0.6)"
+                  onPress={() => {
+                    Actions.push("MyDrawer");
+                  }}
                 >
                   <Text>Cancel</Text>
                 </Button>

@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { Formik } from "formik";
 import { View } from "react-native-animatable";
 import { Button, Input, Text } from "galio-framework";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
+// import React, { useState } from "react";
+
 import {
   StyleSheet,
   ImageBackground,
@@ -17,6 +19,12 @@ const image = {
     "https://static1.squarespace.com/static/5acd47d075f9ee414f7214a3/5ad63461f950b76468caca95/5e5eacc468162464f584d1e5/1583263576371/the-honest-company-uM-WXMr0YXc-unsplash.jpg?format=1500w",
 };
 export default function Signup({ navigation }) {
+  // const [namestate, setnamestate] = useState(true);
+  // const [emailstate, setemailstate] = useState(true);
+  // const [phonestate, setphonestate] = useState(true);
+  // const [passwordstate, setpasswordstate] = useState(true);
+  // const [ButtounState, setButtounState] = useState(true);
+
   return (
     <ImageBackground
       source={image}
@@ -83,10 +91,14 @@ export default function Signup({ navigation }) {
                     onBlur={function allLetter(uname) {
                       var letters = /^[A-Za-z]+$/;
                       if (props.values.Name.match(letters)) {
+                        // setnamestate(false);
+
                         return true;
                       } else {
                         alert("Username must have alphabet characters only");
                         uname.focus();
+                        // setnamestate(true);
+
                         return false;
                       }
                     }}
@@ -121,9 +133,16 @@ export default function Signup({ navigation }) {
                           props.values.Email
                         )
                       ) {
+                        // setemailstate(false);
+
                         return true;
                       }
                       alert("You have entered an invalid email address!");
+                      // setemailstate(true);
+                      // setButtounState(
+                      //   namestate || emailstate || phonestate || passwordstate
+                      // );
+
                       return false;
                     }}
                     style={{
@@ -152,9 +171,13 @@ export default function Signup({ navigation }) {
                     onBlur={function phonenumber(number) {
                       var phoneno = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
                       if (props.values.PhoneNumber.match(phoneno)) {
+                        // setphonestate(false);
+
                         return true;
                       } else {
                         alert("Not a valid Phone Number");
+                        // setphonestate(true);
+
                         return false;
                       }
                     }}
@@ -187,11 +210,18 @@ export default function Signup({ navigation }) {
                     onBlur={function CheckPassword(inputtxt) {
                       var decimal = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/;
                       if (props.values.password.match(decimal)) {
+                        // setpasswordstate(false);
+                        // setButtounState(
+                        //   namestate || emailstate || phonestate || passwordstate
+                        // );
+
                         return true;
                       } else {
                         alert(
                           "Wrong password it should contain 8 to 15 characters which contain at least one lowercase letter, one uppercase letter, one numeric digit, and one special character"
                         );
+                        // setpasswordstate(true);
+
                         return false;
                       }
                     }}
@@ -217,7 +247,8 @@ export default function Signup({ navigation }) {
                       title="signUp"
                       mode="contained"
                       Text="signUp"
-                      color="rgba(255,255,255,0.6)"
+                      disabled={false}
+                      color="rgba(255,177,64,0.6)"
                       onPress={props.handleSubmit}
                     >
                       <Text style={{ color: "black" }}>Signup</Text>
