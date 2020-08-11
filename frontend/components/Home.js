@@ -9,7 +9,7 @@ import {
   Image,
   StyleSheet,
 } from "react-native";
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome , MaterialIcons} from "@expo/vector-icons";
 import axios from "axios";
 import { Button } from "react-native-paper";
 import { NavigationContainer } from "@react-navigation/native";
@@ -43,9 +43,8 @@ function Home1() {
   return <AllNany />;
 }
 function Logout1() {
-  
-    AsyncStorage.removeItem('token');
-    alert('You have been logged out.');
+  alert('You have been logged out.');
+    return <Logout />
   }
 
 function Confirm1() {
@@ -244,11 +243,24 @@ function MyDrawer({ navigation }) {
                                 borderless
                                 title={nany.name}
                                 caption={nany.cost + " $ /H"}
-                                location={nany.place}
                                 image={nany.image}
                                 style={{ backgroundColor: "white" }}
-                              />
-                              <View>
+                              >
+                              <View
+                                  style={{
+                                    flexDirection: "row",
+                                    marginLeft: "70%",
+                                  }}
+                                >
+                                  <MaterialIcons
+                                    name="place"
+                                    size={24}
+                                    color="black"
+                                  />
+                                  <Text>{nany.place}</Text>
+                              </View>
+                            </Card>
+                            <View>
                                 <Button
                                   title="Submit"
                                   mode="contained"
@@ -272,8 +284,7 @@ function MyDrawer({ navigation }) {
           }}
         />
         <Drawer.Screen name="Profile" component={Profile1} />
-        {/* <Drawer.Screen name="Contact Us" component={ContactUs} /> */}
-        <Drawer.Screen name="payment screen" component={Payment} />
+        <Drawer.Screen name="Contact Us" component={ContactUs} />
         <Drawer.Screen name="Logout" component={Logout1} />
         <Drawer.Screen name="Confirm" component={Confirm1} />
       </Drawer.Navigator>

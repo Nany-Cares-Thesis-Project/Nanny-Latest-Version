@@ -9,10 +9,10 @@ import { Notifications } from "expo";
 import * as Permissions from "expo-permissions";
 const localNotification = {
   title: "Nany APP",
-  body: "You send yor location successfully!!",
+  body: "You send your location successfully!!",
 };
 const handleNotification = () => {
-  console.warn("ok! got your notif");
+  console.warn("ok! got your notification");
 };
 const askNotification = async () => {
   // We need to ask for Notification permissions for ios devices
